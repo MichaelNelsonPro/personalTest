@@ -123,9 +123,19 @@ export const useAudioSystem = () => {
   // 设置背景音乐文件
   const setBGM = useCallback((src: string) => {
     if (bgmRef.current) {
-      bgmRef.current.src = src;
+      // 如果路径不是以 http 开头，添加当前 base URL
+      const baseUrl = import.meta.env.BASE_URL || '/';
+      const fullSrc = src.startsWith('http') ? src : 
+                      src.startsWith('/') ? src : 
+                      baseUrl + src;
+      
+      console.log('[BGM] Setting source:', fullSrc);
+      bgmRef.current.src = fullSrc;
+      
       if (state.bgmEnabled) {
-        bgmRef.current.play().catch(console.error);
+        bgmRef.current.play().catch((err) => {
+          console.warn('[BGM] Auto-play failed (expected on first load):', err.message);
+        });
       }
     }
   }, [state.bgmEnabled]);

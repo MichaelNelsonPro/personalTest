@@ -41,7 +41,8 @@ const App: FC = () => {
   // 定期语音播报
   useEffect(() => {
     // 尝试加载默认 BGM
-    setBGM('/bgm.mp3');
+    // 使用相对路径，让 Vite 自动处理 base 路径
+    setBGM('bgm.mp3');
   }, [setBGM]);
 
   // 每隔一段时间播报系统状态
