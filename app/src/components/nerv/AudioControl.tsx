@@ -11,6 +11,8 @@ interface AudioControlProps {
   onToggleVoice: () => void;
   onSetBGMVolume: (volume: number) => void;
   onSetVoiceVolume: (volume: number) => void;
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
 }
 
 const AudioControl: FC<AudioControlProps> = ({
@@ -22,8 +24,19 @@ const AudioControl: FC<AudioControlProps> = ({
   onToggleVoice,
   onSetBGMVolume,
   onSetVoiceVolume,
+  isExpanded: externalExpanded,
+  onToggleExpand,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [internalExpanded, setInternalExpanded] = useState(false);
+  const isExpanded = externalExpanded !== undefined ? externalExpanded : internalExpanded;
+  
+  const handleToggle = () => {
+    if (onToggleExpand) {
+      onToggleExpand();
+    } else {
+      setInternalExpanded(!internalExpanded);
+    }
+  };
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -33,7 +46,7 @@ const AudioControl: FC<AudioControlProps> = ({
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs tracking-wider text-[#00ffff]/80">AUDIO CONTROL</span>
             <button 
-              onClick={() => setIsExpanded(false)}
+              onClick={handleToggle}
               className="text-[#00ffff]/60 hover:text-[#00ffff] text-xs"
             >
               ✕
@@ -120,7 +133,7 @@ const AudioControl: FC<AudioControlProps> = ({
       
       {/* 展开按钮 */}
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleToggle}
         className="w-10 h-10 nerv-panel nerv-corner nerv-panel-cyan flex items-center justify-center hover:bg-[#00ffff]/10 transition-colors"
       >
         <Settings className={`w-5 h-5 text-[#00ffff] ${isExpanded ? 'animate-spin' : ''}`} />
