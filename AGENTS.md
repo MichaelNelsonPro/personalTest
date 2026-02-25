@@ -80,7 +80,11 @@ app/
     └── deploy.yml          # GitHub Actions 自动部署配置 ✨
 
 screenshots/               # 项目截图目录
-└── README.md             # 截图生成说明
+├── README.md             # 截图生成说明
+├── normal.png            # 正常状态截图 (README展示用)
+├── warning.png           # 警告状态截图 (README展示用)
+├── emergency.png         # 紧急状态截图 (README展示用)
+└── themes.png            # 主题切换面板截图 (README展示用)
 ```
 
 ## 构建和开发命令
@@ -366,6 +370,47 @@ npm run dev
 - Battery API: 仅限 Chrome/Edge
 - Memory API: 仅限 Chrome
 - 动画效果: 所有现代浏览器
+
+## 截图生成
+
+项目使用 Playwright 自动生成 README 展示的截图。
+
+### 现有截图
+
+| 文件名 | 描述 | 尺寸 |
+|--------|------|------|
+| `normal.png` | 正常状态（绿色主题）| 1920x1080 |
+| `warning.png` | 警告状态（橙色主题）| 1920x1080 |
+| `emergency.png` | 紧急状态（红色闪烁）| 1920x1080 |
+| `themes.png` | 主题切换面板 | 1920x1080 |
+
+### 重新生成截图
+
+```bash
+cd app
+
+# 安装 Playwright (如果未安装)
+npm install -D playwright
+
+# 启动开发服务器
+npm run dev
+
+# 在另一个终端运行截图脚本
+node take-screenshots.cjs
+```
+
+截图脚本会自动：
+1. 截取正常状态页面
+2. 模拟警告状态（CPU 65%, 内存 75%）
+3. 模拟紧急状态（CPU 90%, 内存 92%）
+4. 截取主题切换面板
+
+### 手动截图
+
+也可以使用浏览器 DevTools 或系统截图工具：
+- **Mac**: `Cmd + Shift + 5`
+- **Windows**: `Win + Shift + S`
+- **Chrome DevTools**: `Cmd + Shift + P` → "Capture screenshot"
 
 ## 安全考虑
 
